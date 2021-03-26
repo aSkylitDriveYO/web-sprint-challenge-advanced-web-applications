@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { fetchColors } from '../api/fetchColors';
 
 import Bubbles from "./Bubbles";
 import ColorList from "./ColorList";
@@ -6,11 +7,24 @@ import ColorList from "./ColorList";
 const BubblePage = () => {
   const [colorList, setColorList] = useState([]);
 
+   // 🔽 Uses an imported API call to receive initial data, this setup allows for easier testing of our isolated API call
+
+  useEffect(() => {
+    fetchColors()
+    .then(res => {
+      setColorList(res.data);
+    })
+    .catch(err => {
+      console.log(err.message);
+    })
+  }, [])
+
+
   return (
-    <div className="container">
+    <>
       <ColorList colors={colorList} updateColors={setColorList} />
       <Bubbles colors={colorList} />
-    </div>
+    </>
   );
 };
 

@@ -1,26 +1,84 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+
+const initFormValues = {
+  username: '',
+  password: ''
+}
+
+const initErrorValue = null;
 
 const Login = () => {
+
+  const [formValues, setFormValues] = useState(initFormValues);
+  const [errorValue, setErrorValue] = useState(initErrorValue);
+
+  const { push } = useHistory();
+
+  const changeHandler = e => {
+    setFormValues({...formValues, [e.target.name]: e.target.value});
+  };
   // make a post request to retrieve a token from the api
   // when you have handled the token, navigate to the BubblePage route
 
-  useEffect(()=>{
+  //useEffect(()=>{
     // make a post request to retrieve a token from the api
     // when you have handled the token, navigate to the BubblePage route
-  });
+  //});
   
-  const error = "";
+
+  //Didn't use the useEffect  no need to use a useEffect to determine when our axios call can run when it will only be run on form submission.
+
+
+  const submitHandler = e => {
+    e.preventDefault();
+
+    (formValues.username === '' || formValues.password === '')  ?  setErrorValue('Username or Password not valid.')  :  setErrorValue(null);
+
+    //Ternary operator to determine wether to display an error message on receiving any empty fields
+
+
+    //🔽 Make axios call, handle errors by displaying to the page
+
+    axios.post('http://localhost:5000/api/login', formValues)
+    .then(res => {
+      console.log(res);
+      localStorage.setItem('token', res.data.payload);
+      push('/bubbles')
+    })
+    .catch(err => {
+      setErrorValue('Username or Password not valid.');
+      setFormValues(initFormValues);
+    });
+  };
   //replace with error state
 
   return (
-    <div>
-      <h1>Welcome to the Bubble App!</h1>
-      <div data-testid="loginForm" className="login-form">
-        <h2>Build login form here</h2>
-      </div>
-
-      <p data-testid="errorMessage" className="error">{error}</p>
-    </div>
+    <>
+      <h1>
+        Welcome to the Bubble App!
+        <p>Build a login page here</p>
+      </h1>
+      <form onSubmit={submitHandler}>
+        {errorValue && <p style={{color: 'red'}}>{errorValue}</p>}
+        <label>Username<br />
+          <input
+          type='text'
+          name='username'
+          value={formValues.username}
+          onChange={changeHandler} />
+        </label>
+        <label>Password<br />
+          <input
+          type='text'
+          name='password'
+          value={formValues.password}
+          onChange={changeHandler} />
+        </label>
+        <button>Submit</button>
+      </form>
+    </>
   );
 };
 
