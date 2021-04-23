@@ -20,4 +20,4 @@ Thunk allows us to use our action creators to perform asynchronous actions/funct
 
 4. Which HTTP methods can be mapped to the CRUD acronym that we use when interfacing with APIs/Servers.
 
-Thunk allows us to use our action creators to perform asynchronous actions/functions/operations with our action creators. Because the Redux action -> reducer flow is by nature synchronous, this is vital for allowing our actions to do things like make API calls to receive data and update our state accordingly. It can also change our action reducers in the form of allowing us to combine all of our action creators into one single thunk-function package, which can simplify things.
+Thunk allows us to use our action creators to perform asynchronous actions/functions/operations with our action creators. Because the Redux action -> reducer flow is by nature synchronous, this is vital for allowing our actions to do things like make API calls to receive data and update our state accordingly. It can also change our action reducers in the form of allowing us to combine all of our action creators into one single thunk-function package, which can simplify things
